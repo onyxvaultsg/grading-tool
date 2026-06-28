@@ -96,6 +96,28 @@ table.sens td.zer{background:rgba(201,168,76,.07);color:var(--cd);}
 footer{position:relative;z-index:1;border-top:1px solid var(--gb);text-align:center;padding:1.5rem;font-size:9px;letter-spacing:.18em;color:var(--cd);text-transform:uppercase;}
 footer span{color:var(--gd);}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.tab-bar{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:1px solid var(--gb);}
+.tab-btn{background:none;border:none;border-bottom:2px solid transparent;color:var(--cd);font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:10px 20px;cursor:pointer;transition:color .2s,border-color .2s;}
+.tab-btn:hover{color:var(--cr);}
+.tab-btn.active{color:var(--go);border-bottom-color:var(--go);}
+.tab-pane{display:none;}.tab-pane.active{display:block;}
+.vol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.25rem;}
+@media(max-width:680px){.vol-grid{grid-template-columns:1fr;}}
+.price-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:.5rem;}
+@media(max-width:700px){.price-row{grid-template-columns:repeat(2,1fr);}}
+.price-input{background:rgba(0,0,0,.28);border:1px solid rgba(201,168,76,.22);border-radius:4px;color:var(--gl);font-family:'Josefin Sans',sans-serif;font-size:14px;padding:8px 10px;width:100%;text-align:center;-webkit-appearance:none;appearance:none;}
+.price-input:focus{outline:none;border-color:var(--go);background:rgba(0,0,0,.38);}
+.price-num{font-size:9px;color:var(--cd);text-align:center;margin-bottom:3px;letter-spacing:.06em;}
+.suggest-box{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.35);border-radius:var(--r);padding:18px 22px;margin-top:1.25rem;}
+.suggest-title{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--go);margin-bottom:10px;}
+.suggest-val{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:500;color:var(--gl);}
+.suggest-sub{font-size:10px;color:var(--cd);margin-top:4px;letter-spacing:.06em;}
+.drift-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(201,168,76,.08);font-size:13px;}
+.drift-row:last-child{border-bottom:none;}
+.drift-key{color:var(--cd);}
+.drift-val{font-family:'Cormorant Garamond',serif;font-size:15px;}
+.use-btn{background:transparent;border:1px solid var(--go);color:var(--go);font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:.16em;text-transform:uppercase;padding:4px 10px;border-radius:3px;cursor:pointer;transition:background .2s,color .2s;margin-left:10px;}
+.use-btn:hover{background:var(--go);color:var(--bd);}
 </style>
 </head>
 <body>
@@ -124,6 +146,11 @@ footer span{color:var(--gd);}
 </header>
 <main>
   <div class="hero"><h2>Card Grading ROI Analyser</h2><div class="hero-rule"></div></div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('tvm',this)">TVM Calculator</button>
+    <button class="tab-btn" onclick="switchTab('vol',this)">Price Volatility Analyser</button>
+  </div>
+  <div id="tab-tvm" class="tab-pane active">
   <div class="panel">
     <div class="ptitle">Submission Inputs</div>
     <div class="g2">
@@ -193,6 +220,91 @@ footer span{color:var(--gd);}
     <p style="font-size:10px;color:rgba(200,185,138,.4);letter-spacing:.05em;margin-bottom:.8rem;">The table shows all multipliers simultaneously. The selector above only drives the point estimate.</p>
     <div class="tscroll"><table class="sens" id="sens2"><tr><td style="color:var(--cd);font-size:11px;padding:1rem;">Loading...</td></tr></table></div>
   </div>
+  </div>
+
+<div id="tab-vol" class="tab-pane">
+  <div class="panel">
+    <div class="ptitle">Card Price History — 20 Weekly Sold Comps (USD)</div>
+    <p style="font-size:10px;color:rgba(200,185,138,.45);letter-spacing:.05em;margin-bottom:1rem;">Enter eBay median sold prices oldest to newest. Leave blank for weeks with no sales (auto forward-filled).</p>
+    <div class="price-row"><div><div class="price-num">Week 1</div><input class="price-input" type="number" id="vp1" min="0" step="0.01" placeholder="--"></div><div><div class="price-num">Week 2</div><input class="price-input" type="number" id="vp2" min="0" step="0.01" placeholder="--"></div><div><div class="price-num">Week 3</div><input class="price-input" type="number" id="vp3" min="0" step="0.01" placeholder="--"></div><div><div class="price-num">Week 4</div><input class="price-input" type="number" id="vp4" min="0" step="0.01" placeholder="--"></div><div><div class="price-num">Week 5</div><input class="price-input" type="number" id="vp5" min="0" step="0.01" placeholder="--"></div></div><div class="price-row"><div><div class="price-num">Week 6</div><input class="price-input" type="number" id="vp6" min="0" step="0.01" placeholder="--"></div><div><div class="price-num">Week 7</div><input class="price-input" type="number" id="vp7" min="0" step="0.01" placeholder="--"></div><div><div class="price-num">Week 8</div><input class="price-input" type="number" id="vp8" min="0" step="0.01" placeholder="--"></div><div><div class="price-num">Week 9</div><input class="price-input" type="number" id="vp9" min="0" step="0.01" placeholder="--"></div><div><div class="price-num">Week 10</div><input class="price-input" type="number" id="vp10" min="0" step="0.01" placeholder="--"></div></div><div class="price-row"><div><div class="price-num">Week 11</div><input class="price-input" type="number" id="vp11" min="0" step="0.01" placeholder="--"></div><div><div class="price-num">Week 12</div><input class="price-input" type="number" id="vp12" min="0" step="0.01" placeholder="--"></div><div><div class="price-num">Week 13</div><input class="price-input" type="number" id="vp13" min="0" step="0.01" placeholder="--"></div><div><div class="price-num">Week 14</div><input class="price-input" type="number" id="vp14" min="0" step="0.01" placeholder="--"></div><div><div class="price-num">Week 15</div><input class="price-input" type="number" id="vp15" min="0" step="0.01" placeholder="--"></div></div><div class="price-row"><div><div class="price-num">Week 16</div><input class="price-input" type="number" id="vp16" min="0" step="0.01" placeholder="--"></div><div><div class="price-num">Week 17</div><input class="price-input" type="number" id="vp17" min="0" step="0.01" placeholder="--"></div><div><div class="price-num">Week 18</div><input class="price-input" type="number" id="vp18" min="0" step="0.01" placeholder="--"></div><div><div class="price-num">Week 19</div><input class="price-input" type="number" id="vp19" min="0" step="0.01" placeholder="--"></div><div><div class="price-num">Week 20</div><input class="price-input" type="number" id="vp20" min="0" step="0.01" placeholder="--"></div></div>
+    <div style="display:flex;gap:1rem;align-items:center;margin-top:1rem;flex-wrap:wrap;">
+      <div class="field" style="flex:1;min-width:160px;">
+        <label>Current / most recent price (USD)</label>
+        <input type="number" id="v-current" value="" min="0" step="0.01" placeholder="auto-fills from Week 20">
+      </div>
+      <div class="field" style="flex:1;min-width:160px;">
+        <label>Grading period (months)</label>
+        <input type="number" id="v-months" value="6" min="1" max="36" step="1">
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="ptitle">Volatility Summary</div>
+    <div class="vol-grid">
+      <div class="metric"><div class="mlabel">Mean Price</div><div class="mval" id="v-mean">--</div><div class="msub">Average over period</div></div>
+      <div class="metric"><div class="mlabel">Std Deviation</div><div class="mval" id="v-std">--</div><div class="msub">Typical weekly swing</div></div>
+      <div class="metric"><div class="mlabel">Coefficient of Variation</div><div class="mval" id="v-cv">--</div><div class="msub">Scale-free volatility</div></div>
+      <div class="metric"><div class="mlabel">Weekly Volatility</div><div class="mval" id="v-wvol">--</div><div class="msub">Log-return std dev</div></div>
+      <div class="metric"><div class="mlabel">Annual Volatility</div><div class="mval" id="v-avol">--</div><div class="msub">Annualised (52 weeks)</div></div>
+      <div class="metric"><div class="mlabel">Max Historical Drawdown</div><div class="mval" id="v-mdd">--</div><div class="msub">Worst peak-to-trough</div></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="ptitle">Price Scenarios Over Grading Period</div>
+    <div id="drift-rows">
+      <div class="drift-row"><span class="drift-key">Current price</span><span class="drift-val" id="v-cur2">--</span></div>
+      <div class="drift-row">
+        <span class="drift-key">+1 SD scenario (bull case)</span>
+        <span style="display:flex;align-items:center;gap:8px;">
+          <span class="drift-val net-pos" id="v-p1sd">--</span>
+          <button class="use-btn" onclick="useDrift('v-drift-p1sd')">Use in TVM</button>
+          <span class="drift-val" id="v-drift-p1sd" style="font-size:12px;"></span>
+        </span>
+      </div>
+      <div class="drift-row">
+        <span class="drift-key">-1 SD scenario (conservative)</span>
+        <span style="display:flex;align-items:center;gap:8px;">
+          <span class="drift-val net-neg" id="v-m1sd">--</span>
+          <button class="use-btn" onclick="useDrift('v-drift-m1sd')">Use in TVM</button>
+          <span class="drift-val" id="v-drift-m1sd" style="font-size:12px;"></span>
+        </span>
+      </div>
+      <div class="drift-row">
+        <span class="drift-key">-2 SD scenario (stressed / bear case)</span>
+        <span style="display:flex;align-items:center;gap:8px;">
+          <span class="drift-val net-neg" id="v-m2sd">--</span>
+          <button class="use-btn" onclick="useDrift('v-drift-m2sd')">Use in TVM</button>
+          <span class="drift-val" id="v-drift-m2sd" style="font-size:12px;"></span>
+        </span>
+      </div>
+      <div class="drift-row">
+        <span class="drift-key">10th percentile (historical worst 10%)</span>
+        <span style="display:flex;align-items:center;gap:8px;">
+          <span class="drift-val net-neg" id="v-p10">--</span>
+          <button class="use-btn" onclick="useDrift('v-drift-p10')">Use in TVM</button>
+          <span class="drift-val" id="v-drift-p10" style="font-size:12px;"></span>
+        </span>
+      </div>
+      <div class="drift-row">
+        <span class="drift-key">Max drawdown scenario</span>
+        <span style="display:flex;align-items:center;gap:8px;">
+          <span class="drift-val net-neg" id="v-mdd2">--</span>
+          <button class="use-btn" onclick="useDrift('v-drift-mdd')">Use in TVM</button>
+          <span class="drift-val" id="v-drift-mdd" style="font-size:12px;"></span>
+        </span>
+      </div>
+    </div>
+
+    <div class="suggest-box">
+      <div class="suggest-title">Suggested Price Change Input for TVM Calculator</div>
+      <div class="suggest-val" id="v-suggest">--</div>
+      <div class="suggest-sub" id="v-suggest-basis">Worst of -1 SD projection or max historical drawdown</div>
+      <button class="use-btn" style="margin-top:12px;" onclick="useSuggested()">Apply to TVM Calculator</button>
+    </div>
+  </div>
+</div>
 </main>
 <footer><p>2026 <span>Onyx Vault</span> -- Analyze -- Acquire -- Profit -- Members Only -- SG CPI source: MAS / DOS Singapore</p></footer>
 <script>
@@ -375,6 +487,130 @@ function fetchPE(){
 });
 
 if(TOKEN) recalc();
+
+// ── Tab switching ────────────────────────────────────────────────────────
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-pane').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── Volatility analyser ──────────────────────────────────────────────────
+function getVolPrices() {
+  var prices = [];
+  for (var i = 1; i <= 20; i++) {
+    var el = document.getElementById('vp' + i);
+    var v = parseFloat(el ? el.value : '');
+    prices.push(isNaN(v) ? null : v);
+  }
+  return prices;
+}
+
+function useDrift(valId) {
+  var el = document.getElementById(valId);
+  if (!el || !el.textContent || el.textContent === '--') return;
+  var pct = parseFloat(el.textContent.replace('%','').replace('+',''));
+  if (isNaN(pct)) return;
+  var inp = document.getElementById('priceChange');
+  if (inp) {
+    inp.value = pct.toFixed(2);
+    // Switch to TVM tab and trigger recalc
+    var tvmBtn = document.querySelector('.tab-btn');
+    if (tvmBtn) switchTab('tvm', tvmBtn);
+    recalc();
+  }
+}
+
+function useSuggested() {
+  var el = document.getElementById('v-suggest');
+  if (!el || !el.textContent || el.textContent === '--') return;
+  var pct = parseFloat(el.textContent.replace('%','').replace('+',''));
+  if (isNaN(pct)) return;
+  var inp = document.getElementById('priceChange');
+  if (inp) {
+    inp.value = pct.toFixed(2);
+    var tvmBtn = document.querySelector('.tab-btn');
+    if (tvmBtn) switchTab('tvm', tvmBtn);
+    recalc();
+  }
+}
+
+function fmtDrift(n) {
+  return (n >= 0 ? '+' : '') + n.toFixed(2) + '%';
+}
+
+var volDebounce = null;
+function triggerVol() {
+  clearTimeout(volDebounce);
+  volDebounce = setTimeout(runVol, 600);
+}
+
+async function runVol() {
+  if (!TOKEN) return;
+  var prices = getVolPrices();
+  var validPrices = prices.filter(function(p){ return p !== null; });
+  if (validPrices.length < 5) return;
+
+  // Auto-fill current price from last non-null entry
+  var lastValid = null;
+  for (var i = prices.length - 1; i >= 0; i--) {
+    if (prices[i] !== null) { lastValid = prices[i]; break; }
+  }
+  var curEl = document.getElementById('v-current');
+  if (curEl && (!curEl.value || parseFloat(curEl.value) === 0) && lastValid) {
+    curEl.value = lastValid;
+  }
+
+  var currentPrice = parseFloat(document.getElementById('v-current').value) || lastValid || 0;
+  var months = parseFloat(document.getElementById('v-months').value) || 6;
+
+  try {
+    var res = await fetch(API + '/volatility', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','x-access-token':TOKEN},
+      body: JSON.stringify({prices: prices, current_price: currentPrice, grading_months: months})
+    });
+    if (!res.ok) return;
+    var d = await res.json();
+
+    document.getElementById('v-mean').textContent  = '$' + d.mean_price.toFixed(2);
+    document.getElementById('v-std').textContent   = '$' + d.std_dev.toFixed(2);
+    document.getElementById('v-cv').textContent    = d.cv_pct.toFixed(1) + '%';
+    document.getElementById('v-wvol').textContent  = d.weekly_vol_pct.toFixed(1) + '%';
+    document.getElementById('v-avol').textContent  = d.annual_vol_pct.toFixed(1) + '%';
+    document.getElementById('v-mdd').textContent   = d.max_drawdown_pct.toFixed(1) + '%';
+
+    document.getElementById('v-cur2').textContent  = '$' + d.current_price.toFixed(2);
+    document.getElementById('v-p1sd').textContent  = '$' + d.plus_1sd_price.toFixed(2);
+    document.getElementById('v-m1sd').textContent  = '$' + d.minus_1sd_price.toFixed(2);
+    document.getElementById('v-m2sd').textContent  = '$' + d.minus_2sd_price.toFixed(2);
+    document.getElementById('v-p10').textContent   = '$' + d.p10_price.toFixed(2);
+    document.getElementById('v-mdd2').textContent  = '$' + (d.current_price * (1 + d.drift_max_dd/100)).toFixed(2);
+
+    document.getElementById('v-drift-p1sd').textContent = fmtDrift(d.drift_plus_1sd);
+    document.getElementById('v-drift-m1sd').textContent = fmtDrift(d.drift_minus_1sd);
+    document.getElementById('v-drift-m2sd').textContent = fmtDrift(d.drift_minus_2sd);
+    document.getElementById('v-drift-p10').textContent  = fmtDrift(d.drift_p10);
+    document.getElementById('v-drift-mdd').textContent  = fmtDrift(d.drift_max_dd);
+
+    document.getElementById('v-suggest').textContent = fmtDrift(d.suggested_drift);
+
+  } catch(e) { console.error(e); }
+}
+
+// Wire up vol inputs
+for (var vi = 1; vi <= 20; vi++) {
+  (function(i){
+    var el = document.getElementById('vp' + i);
+    if (el) el.addEventListener('input', triggerVol);
+  })(vi);
+}
+['v-current','v-months'].forEach(function(id){
+  var el = document.getElementById(id);
+  if (el) el.addEventListener('input', triggerVol);
+});
+
 </script>
 </body>
 </html>
